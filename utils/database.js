@@ -1,8 +1,12 @@
-import mongoose from 'mongoose';
-
 let isConnected = false;
 
-const connectToDB = async () => {
+export const connectToDB = async () => {
+  if (typeof window !== 'undefined') {
+    // Prevent this code from running on the client-side
+    return;
+  }
+
+  const mongoose = require('mongoose'); // Use require to load Mongoose only on the server side
   mongoose.set('strictQuery', true);
 
   if (isConnected) {
@@ -18,8 +22,6 @@ const connectToDB = async () => {
     isConnected = true;
     console.log('MongoDB Successfully connected');
   } catch (error) {
-    console.error('MongoDB connection error:', error); 
+    console.error('MongoDB connection error:', error);
   }
-}
-
-export default connectToDB;
+};
